@@ -4,6 +4,8 @@ import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import {
   Alert,
+  KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -154,104 +156,112 @@ export default function TaskDetailScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
-        <TaskHeader task={task} />
+        <ScrollView
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={true}
+          contentContainerStyle={styles.scrollViewContent}
+          keyboardShouldPersistTaps="handled"
+        >
+          <TaskHeader task={task} />
 
-        {task.status === 'in-progress' && (
-          <TaskTimer
-            startTime={task.startTime!}
-            estimatedDuration={task.estimatedDuration}
-            timer={timer}
-          />
-        )}
-
-        <View style={[{ backgroundColor }, styles.section]}>
-          <ThemedText style={styles.sectionTitle}>Progress</ThemedText>
-          <View style={styles.progressContainer}>
-            <View style={styles.progressBar}>
-              <View
-                style={[
-                  styles.progressFill,
-                  { width: `${getProgressPercentage()}%` }
-                ]}
-              />
-            </View>
-            <ThemedText style={styles.progressText}>
-              {getProgressPercentage()}% Complete
-            </ThemedText>
-          </View>
-        </View>
-
-        <View style={[{ backgroundColor }, styles.section]}>
-          <ThemedText style={styles.sectionTitle}>Checklist</ThemedText>
-          {task.checklistItems.map(item => (
-            <ChecklistItem
-              key={item.id}
-              item={item}
-              onToggle={completed => handleChecklistToggle(item.id, completed)}
-              disabled={isCompleted}
-            />
-          ))}
-        </View>
-
-        <View style={[{ backgroundColor }, styles.section]}>
-          <ThemedText style={styles.sectionTitle}>Notes</ThemedText>
-          <TextInput
-            style={[
-              styles.notesInput,
-              {
-                borderColor: borderColor,
-                backgroundColor: inputBackground,
-                color: textColor
-              }
-            ]}
-            placeholder="Add any notes about this task..."
-            placeholderTextColor={placeholderColor}
-            value={notes}
-            onChangeText={handleNotesChange}
-            multiline
-            numberOfLines={4}
-            textAlignVertical="top"
-            editable={!isCompleted}
-          />
-        </View>
-
-        <View style={styles.actionSection}>
-          {canStartTask && (
-            <ActionButton
-              title="Start Task"
-              onPress={handleStartTask}
-              style={styles.startButton}
-              textStyle={styles.startButtonText}
+          {task.status === 'in-progress' && (
+            <TaskTimer
+              startTime={task.startTime!}
+              estimatedDuration={task.estimatedDuration}
+              timer={timer}
             />
           )}
 
-          {canStopTask && (
-            <ActionButton
-              title="Complete Task"
-              onPress={handleStopTask}
-              style={styles.completeButton}
-              textStyle={styles.completeButtonText}
-            />
-          )}
-
-          {isCompleted && (
-            <View style={styles.completedContainer}>
-              <ThemedText style={styles.completedText}>
-                ✅ Task Completed
+          <View style={[{ backgroundColor }, styles.section]}>
+            <ThemedText style={styles.sectionTitle}>Progress</ThemedText>
+            <View style={styles.progressContainer}>
+              <View style={styles.progressBar}>
+                <View
+                  style={[
+                    styles.progressFill,
+                    { width: `${getProgressPercentage()}%` }
+                  ]}
+                />
+              </View>
+              <ThemedText style={styles.progressText}>
+                {getProgressPercentage()}% Complete
               </ThemedText>
-              {task.actualDuration && (
-                <ThemedText style={styles.completedDuration}>
-                  Duration: {task.actualDuration} minutes
-                </ThemedText>
-              )}
             </View>
-          )}
-        </View>
-      </ScrollView>
+          </View>
+
+          <View style={[{ backgroundColor }, styles.section]}>
+            <ThemedText style={styles.sectionTitle}>Checklist</ThemedText>
+            {task.checklistItems.map(item => (
+              <ChecklistItem
+                key={item.id}
+                item={item}
+                onToggle={completed => handleChecklistToggle(item.id, completed)}
+                disabled={isCompleted}
+              />
+            ))}
+          </View>
+
+          <View style={[{ backgroundColor }, styles.section]}>
+            <ThemedText style={styles.sectionTitle}>Notes</ThemedText>
+            <TextInput
+              style={[
+                styles.notesInput,
+                {
+                  borderColor: borderColor,
+                  backgroundColor: inputBackground,
+                  color: textColor
+                }
+              ]}
+              placeholder="Add any notes about this task..."
+              placeholderTextColor={placeholderColor}
+              value={notes}
+              onChangeText={handleNotesChange}
+              multiline
+              numberOfLines={4}
+              textAlignVertical="top"
+              editable={!isCompleted}
+            />
+          </View>
+
+          <View style={styles.actionSection}>
+            {canStartTask && (
+              <ActionButton
+                title="Start Task"
+                onPress={handleStartTask}
+                style={styles.startButton}
+                textStyle={styles.startButtonText}
+              />
+            )}
+
+            {canStopTask && (
+              <ActionButton
+                title="Complete Task"
+                onPress={handleStopTask}
+                style={styles.completeButton}
+                textStyle={styles.completeButtonText}
+              />
+            )}
+
+            {isCompleted && (
+              <View style={styles.completedContainer}>
+                <ThemedText style={styles.completedText}>
+                  ✅ Task Completed
+                </ThemedText>
+                {task.actualDuration && (
+                  <ThemedText style={styles.completedDuration}>
+                    Duration: {task.actualDuration} minutes
+                  </ThemedText>
+                )}
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }
@@ -260,8 +270,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  keyboardAvoidingView: {
+    flex: 1
+  },
   scrollView: {
     flex: 1
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingBottom: 20
   },
   errorContainer: {
     flex: 1,
