@@ -96,6 +96,21 @@ export default function TaskDetailScreen() {
   }
 
   const handleStopTask = () => {
+    Alert.alert(
+      'Stop Task',
+      'Are you sure you want to stop this task? You can resume it later.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Stop',
+          style: 'default',
+          onPress: () => dispatch({ type: 'STOP_TASK', payload: taskId })
+        }
+      ]
+    )
+  }
+
+  const handleCompleteTask = () => {
     const completedItems = task.checklistItems.filter(
       item => item.completed
     ).length
@@ -112,7 +127,7 @@ export default function TaskDetailScreen() {
           {
             text: 'Complete Anyway',
             style: 'destructive',
-            onPress: () => dispatch({ type: 'STOP_TASK', payload: taskId })
+            onPress: () => dispatch({ type: 'COMPLETE_TASK', payload: taskId })
           }
         ]
       )
@@ -122,7 +137,7 @@ export default function TaskDetailScreen() {
         {
           text: 'Complete',
           style: 'default',
-          onPress: () => dispatch({ type: 'STOP_TASK', payload: taskId })
+          onPress: () => dispatch({ type: 'COMPLETE_TASK', payload: taskId })
         }
       ])
     }
@@ -200,7 +215,9 @@ export default function TaskDetailScreen() {
               <ChecklistItem
                 key={item.id}
                 item={item}
-                onToggle={completed => handleChecklistToggle(item.id, completed)}
+                onToggle={completed =>
+                  handleChecklistToggle(item.id, completed)
+                }
                 disabled={isCompleted}
               />
             ))}
@@ -239,12 +256,20 @@ export default function TaskDetailScreen() {
             )}
 
             {canStopTask && (
-              <ActionButton
-                title="Complete Task"
-                onPress={handleStopTask}
-                style={styles.completeButton}
-                textStyle={styles.completeButtonText}
-              />
+              <View style={styles.buttonRow}>
+                <ActionButton
+                  title="Stop Task"
+                  onPress={handleStopTask}
+                  style={{ ...styles.pauseButton, ...styles.halfWidth }}
+                  textStyle={styles.pauseButtonText}
+                />
+                <ActionButton
+                  title="Complete Task"
+                  onPress={handleCompleteTask}
+                  style={{ ...styles.completeButton, ...styles.halfWidth }}
+                  textStyle={styles.completeButtonText}
+                />
+              </View>
             )}
 
             {isCompleted && (
@@ -384,5 +409,27 @@ const styles = StyleSheet.create({
   completedDuration: {
     fontSize: 14,
     color: '#047857'
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: 12,
+    width: '100%'
+  },
+  halfWidth: {
+    flex: 1
+  },
+  pauseButton: {
+    backgroundColor: '#f59e0b',
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 56
+  },
+  pauseButtonText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '600'
   }
 })

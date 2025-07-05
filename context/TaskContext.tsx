@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react'
+import React, { createContext, ReactNode, useContext, useReducer } from 'react'
 
 export type TaskStatus = 'pending' | 'in-progress' | 'completed' | 'overdue'
 export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent'
@@ -160,7 +160,7 @@ function taskReducer(state: TaskState, action: TaskAction): TaskState {
           task.id === action.payload
             ? {
                 ...task,
-                status: 'in-progress' as TaskStatus,
+                status: 'in-progress',
                 startTime: new Date()
               }
             : task
@@ -175,11 +175,11 @@ function taskReducer(state: TaskState, action: TaskAction): TaskState {
           task.id === action.payload
             ? {
                 ...task,
-                status: 'completed' as TaskStatus,
-                endTime: new Date(),
+                status: 'pending',
                 actualDuration: task.startTime
-                  ? Math.floor((Date.now() - task.startTime.getTime()) / 60000)
-                  : undefined
+                  ? (task.actualDuration || 0) +
+                    Math.floor((Date.now() - task.startTime.getTime()) / 60000)
+                  : task.actualDuration
               }
             : task
         ),
@@ -191,11 +191,18 @@ function taskReducer(state: TaskState, action: TaskAction): TaskState {
         ...state,
         tasks: state.tasks.map(task =>
           task.id === action.payload
-            ? { ...task, status: 'completed' as TaskStatus }
+            ? {
+                ...task,
+                status: 'completed',
+                endTime: new Date(),
+                actualDuration: task.startTime
+                  ? (task.actualDuration || 0) +
+                    Math.floor((Date.now() - task.startTime.getTime()) / 60000)
+                  : undefined
+              }
             : task
         ),
-        activeTask:
-          state.activeTask === action.payload ? null : state.activeTask
+        activeTask: null
       }
 
     case 'UPDATE_CHECKLIST':
