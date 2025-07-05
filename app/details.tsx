@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
   },
   completeButtonText: {
     color: '#ffffff',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '600'
   },
   completedContainer: {
