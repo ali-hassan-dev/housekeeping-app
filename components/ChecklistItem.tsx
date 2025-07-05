@@ -1,8 +1,7 @@
 import { ThemedText } from '@/components/ThemedText'
-import { ThemedView } from '@/components/ThemedView'
 import { useThemeColor } from '@/hooks/useThemeColor'
 import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 
 interface ChecklistItemProps {
   item: {
@@ -68,8 +67,8 @@ export default function ChecklistItem({
       disabled={disabled}
       activeOpacity={0.7}
     >
-      <ThemedView style={styles.checkboxContainer}>
-        <ThemedView
+      <View style={styles.checkboxContainer}>
+        <View
           style={[
             styles.checkbox,
             {
@@ -83,8 +82,8 @@ export default function ChecklistItem({
           ]}
         >
           {item.completed && <ThemedText style={styles.checkmark}>✓</ThemedText>}
-        </ThemedView>
-      </ThemedView>
+        </View>
+      </View>
 
       <ThemedText
         style={[

@@ -1,8 +1,7 @@
 import { ThemedText } from '@/components/ThemedText'
-import { ThemedView } from '@/components/ThemedView'
 import { useThemeColor } from '@/hooks/useThemeColor'
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Task, TaskPriority, TaskStatus } from '../context/TaskContext'
 
 interface TaskHeaderProps {
@@ -83,14 +82,14 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
   }
 
   return (
-    <ThemedView
+    <View
       style={[
         styles.container,
         { backgroundColor: cardBackgroundColor, shadowColor }
       ]}
     >
-      <ThemedView style={styles.headerRow}>
-        <ThemedView style={styles.apartmentContainer}>
+      <View style={styles.headerRow}>
+        <View style={styles.apartmentContainer}>
           <ThemedText
             style={styles.apartmentLabel}
             lightColor="#6b7280"
@@ -105,17 +104,17 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
           >
             {task.apartmentNumber}
           </ThemedText>
-        </ThemedView>
-        <ThemedView style={styles.badgeContainer}>
-          <ThemedView
+        </View>
+        <View style={styles.badgeContainer}>
+          <View
             style={[
               styles.statusBadge,
               { backgroundColor: getStatusColor(task.status) }
             ]}
           >
             <ThemedText style={styles.badgeText}>{getStatusText(task.status)}</ThemedText>
-          </ThemedView>
-          <ThemedView
+          </View>
+          <View
             style={[
               styles.priorityBadge,
               { backgroundColor: getPriorityColor(task.priority) }
@@ -124,9 +123,9 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
             <ThemedText style={styles.badgeText}>
               {getPriorityText(task.priority)}
             </ThemedText>
-          </ThemedView>
-        </ThemedView>
-      </ThemedView>
+          </View>
+        </View>
+      </View>
 
       <ThemedText style={styles.title} lightColor="#1f2937" darkColor="#f9fafb">
         {task.title}
@@ -139,8 +138,8 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
         {task.description}
       </ThemedText>
 
-      <ThemedView style={styles.infoGrid}>
-        <ThemedView style={styles.infoItem}>
+      <View style={styles.infoGrid}>
+        <View style={styles.infoItem}>
           <ThemedText
             style={styles.infoLabel}
             lightColor="#9ca3af"
@@ -155,8 +154,8 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
           >
             {task.assignedTo}
           </ThemedText>
-        </ThemedView>
-        <ThemedView style={styles.infoItem}>
+        </View>
+        <View style={styles.infoItem}>
           <ThemedText
             style={styles.infoLabel}
             lightColor="#9ca3af"
@@ -171,8 +170,8 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
           >
             {task.estimatedDuration} min
           </ThemedText>
-        </ThemedView>
-        <ThemedView style={styles.infoItem}>
+        </View>
+        <View style={styles.infoItem}>
           <ThemedText
             style={styles.infoLabel}
             lightColor="#9ca3af"
@@ -190,9 +189,9 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
           >
             {formatDeadline(task.deadline)}
           </ThemedText>
-        </ThemedView>
+        </View>
         {task.actualDuration && (
-          <ThemedView style={styles.infoItem}>
+          <View style={styles.infoItem}>
             <ThemedText
               style={styles.infoLabel}
               lightColor="#9ca3af"
@@ -207,10 +206,10 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
             >
               {task.actualDuration} min
             </ThemedText>
-          </ThemedView>
+          </View>
         )}
-      </ThemedView>
-    </ThemedView>
+      </View>
+    </View>
   )
 }
 

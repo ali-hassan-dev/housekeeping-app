@@ -1,8 +1,7 @@
 import { ThemedText } from '@/components/ThemedText'
-import { ThemedView } from '@/components/ThemedView'
 import { useThemeColor } from '@/hooks/useThemeColor'
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 interface TaskTimerProps {
   startTime: Date
@@ -48,13 +47,13 @@ export default function TaskTimer({
   const progressPercentage = getProgressPercentage()
 
   return (
-    <ThemedView
+    <View
       style={[
         styles.container,
         { backgroundColor: cardBackgroundColor, shadowColor }
       ]}
     >
-      <ThemedView style={styles.timerHeader}>
+      <View style={styles.timerHeader}>
         <ThemedText
           style={styles.timerLabel}
           lightColor="#1f2937"
@@ -69,9 +68,9 @@ export default function TaskTimer({
         >
           Est. {estimatedDuration} min
         </ThemedText>
-      </ThemedView>
+      </View>
 
-      <ThemedView style={styles.timerDisplay}>
+      <View style={styles.timerDisplay}>
         <ThemedText
           style={[
             styles.timerText,
@@ -83,13 +82,13 @@ export default function TaskTimer({
           {formatTime(timer)}
         </ThemedText>
         {isOvertime && <ThemedText style={styles.overtimeText}>OVERTIME</ThemedText>}
-      </ThemedView>
+      </View>
 
-      <ThemedView style={styles.progressContainer}>
-        <ThemedView
+      <View style={styles.progressContainer}>
+        <View
           style={[styles.progressBar, { backgroundColor: progressBarBgColor }]}
         >
-          <ThemedView
+          <View
             style={[
               styles.progressFill,
               {
@@ -98,7 +97,7 @@ export default function TaskTimer({
               }
             ]}
           />
-        </ThemedView>
+        </View>
         <ThemedText
           style={[
             styles.progressText,
@@ -107,10 +106,10 @@ export default function TaskTimer({
         >
           {Math.round(progressPercentage)}%
         </ThemedText>
-      </ThemedView>
+      </View>
 
-      <ThemedView style={[styles.timeInfo, { borderTopColor: borderColor }]}>
-        <ThemedView style={styles.timeItem}>
+      <View style={[styles.timeInfo, { borderTopColor: borderColor }]}>
+        <View style={styles.timeItem}>
           <ThemedText
             style={styles.timeItemLabel}
             lightColor="#9ca3af"
@@ -128,8 +127,8 @@ export default function TaskTimer({
               minute: '2-digit'
             })}
           </ThemedText>
-        </ThemedView>
-        <ThemedView style={styles.timeItem}>
+        </View>
+        <View style={styles.timeItem}>
           <ThemedText
             style={styles.timeItemLabel}
             lightColor="#9ca3af"
@@ -144,8 +143,8 @@ export default function TaskTimer({
           >
             {Math.floor(timer / 60)} min
           </ThemedText>
-        </ThemedView>
-        <ThemedView style={styles.timeItem}>
+        </View>
+        <View style={styles.timeItem}>
           <ThemedText
             style={styles.timeItemLabel}
             lightColor="#9ca3af"
@@ -165,9 +164,9 @@ export default function TaskTimer({
               ? `+${Math.floor((timer - estimatedDuration * 60) / 60)} min`
               : `${Math.floor((estimatedDuration * 60 - timer) / 60)} min`}
           </ThemedText>
-        </ThemedView>
-      </ThemedView>
-    </ThemedView>
+        </View>
+      </View>
+    </View>
   )
 }
 

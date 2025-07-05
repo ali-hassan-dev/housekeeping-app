@@ -1,11 +1,16 @@
 import { router } from 'expo-router'
 import React, { useState } from 'react'
-import { FlatList, SafeAreaView, ScrollView, StyleSheet } from 'react-native'
+import {
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View
+} from 'react-native'
 import StatsCard from '../../components/StatsCard'
 import StatusFilter from '../../components/StatusFilter'
 import TaskCard from '../../components/TaskCard'
 import { ThemedText } from '../../components/ThemedText'
-import { ThemedView } from '../../components/ThemedView'
 import { TaskStatus, useTask } from '../../context/TaskContext'
 
 export default function HomeScreen() {
@@ -34,7 +39,7 @@ export default function HomeScreen() {
   )
 
   const renderHeader = () => (
-    <ThemedView style={styles.headerContainer}>
+    <View style={styles.headerContainer}>
       <ThemedText style={styles.welcomeText}>Velkommen, Maria! 👋</ThemedText>
       <ThemedText style={styles.dateText}>
         {new Date().toLocaleDateString('da-DK', {
@@ -81,7 +86,7 @@ export default function HomeScreen() {
         selectedFilter={selectedFilter}
         onFilterChange={setSelectedFilter}
       />
-    </ThemedView>
+    </View>
   )
 
   return (
@@ -94,12 +99,12 @@ export default function HomeScreen() {
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <ThemedView style={styles.emptyContainer}>
+          <View style={styles.emptyContainer}>
             <ThemedText style={styles.emptyText}>No tasks found</ThemedText>
             <ThemedText style={styles.emptySubText}>
               All tasks for this filter are complete!
             </ThemedText>
-          </ThemedView>
+          </View>
         }
       />
     </SafeAreaView>

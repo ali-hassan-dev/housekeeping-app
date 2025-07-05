@@ -1,5 +1,4 @@
 import { ThemedText } from '@/components/ThemedText'
-import { ThemedView } from '@/components/ThemedView'
 import { useThemeColor } from '@/hooks/useThemeColor'
 import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useState } from 'react'
@@ -8,7 +7,8 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TextInput
+  TextInput,
+  View
 } from 'react-native'
 import ActionButton from '../components/ActionButton'
 import ChecklistItem from '../components/ChecklistItem'
@@ -61,9 +61,9 @@ export default function TaskDetailScreen() {
   if (!task) {
     return (
       <SafeAreaView style={styles.container}>
-        <ThemedView style={styles.errorContainer}>
+        <View style={styles.errorContainer}>
           <ThemedText style={styles.errorText}>Task not found</ThemedText>
-        </ThemedView>
+        </View>
       </SafeAreaView>
     )
   }
@@ -167,24 +167,24 @@ export default function TaskDetailScreen() {
           />
         )}
 
-        <ThemedView style={styles.section}>
+        <View style={styles.section}>
           <ThemedText style={styles.sectionTitle}>Progress</ThemedText>
-          <ThemedView style={styles.progressContainer}>
-            <ThemedView style={styles.progressBar}>
-              <ThemedView
+          <View style={styles.progressContainer}>
+            <View style={styles.progressBar}>
+              <View
                 style={[
                   styles.progressFill,
                   { width: `${getProgressPercentage()}%` }
                 ]}
               />
-            </ThemedView>
+            </View>
             <ThemedText style={styles.progressText}>
               {getProgressPercentage()}% Complete
             </ThemedText>
-          </ThemedView>
-        </ThemedView>
+          </View>
+        </View>
 
-        <ThemedView style={styles.section}>
+        <View style={styles.section}>
           <ThemedText style={styles.sectionTitle}>Checklist</ThemedText>
           {task.checklistItems.map(item => (
             <ChecklistItem
@@ -194,9 +194,9 @@ export default function TaskDetailScreen() {
               disabled={isCompleted}
             />
           ))}
-        </ThemedView>
+        </View>
 
-        <ThemedView style={styles.section}>
+        <View style={styles.section}>
           <ThemedText style={styles.sectionTitle}>Notes</ThemedText>
           <TextInput
             style={[
@@ -216,9 +216,9 @@ export default function TaskDetailScreen() {
             textAlignVertical="top"
             editable={!isCompleted}
           />
-        </ThemedView>
+        </View>
 
-        <ThemedView style={styles.actionSection}>
+        <View style={styles.actionSection}>
           {canStartTask && (
             <ActionButton
               title="Start Task"
@@ -238,7 +238,7 @@ export default function TaskDetailScreen() {
           )}
 
           {isCompleted && (
-            <ThemedView style={styles.completedContainer}>
+            <View style={styles.completedContainer}>
               <ThemedText style={styles.completedText}>
                 ✅ Task Completed
               </ThemedText>
@@ -247,9 +247,9 @@ export default function TaskDetailScreen() {
                   Duration: {task.actualDuration} minutes
                 </ThemedText>
               )}
-            </ThemedView>
+            </View>
           )}
-        </ThemedView>
+        </View>
       </ScrollView>
     </SafeAreaView>
   )

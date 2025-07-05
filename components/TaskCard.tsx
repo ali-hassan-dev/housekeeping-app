@@ -3,10 +3,10 @@ import React from 'react'
 import {
   StyleSheet,
   TouchableOpacity,
+  View
 } from 'react-native'
 import { Task, TaskPriority, TaskStatus } from '../context/TaskContext'
 import { ThemedText } from './ThemedText'
-import { ThemedView } from './ThemedView'
 
 interface TaskCardProps {
   task: Task
@@ -111,21 +111,21 @@ export default function TaskCard({ task, onPress }: TaskCardProps) {
       onPress={onPress} 
       activeOpacity={0.7}
     >
-      <ThemedView style={styles.cardHeader}>
-        <ThemedView style={styles.apartmentContainer}>
+      <View style={styles.cardHeader}>
+        <View style={styles.apartmentContainer}>
           <ThemedText style={styles.apartmentNumber}>
             Room {task.apartmentNumber}
           </ThemedText>
-          <ThemedView
+          <View
             style={[
               styles.statusBadge,
               { backgroundColor: getStatusColor(task.status) }
             ]}
           >
             <ThemedText style={styles.statusText}>{getStatusText(task.status)}</ThemedText>
-          </ThemedView>
-        </ThemedView>
-        <ThemedView
+          </View>
+        </View>
+        <View
           style={[
             styles.priorityBadge,
             { backgroundColor: getPriorityColor(task.priority) }
@@ -134,17 +134,17 @@ export default function TaskCard({ task, onPress }: TaskCardProps) {
           <ThemedText style={styles.priorityText}>
             {getPriorityText(task.priority)}
           </ThemedText>
-        </ThemedView>
-      </ThemedView>
+        </View>
+      </View>
 
       <ThemedText style={styles.title}>{task.title}</ThemedText>
       <ThemedText style={styles.description} numberOfLines={2}>
         {task.description}
       </ThemedText>
 
-      <ThemedView style={styles.progressContainer}>
-        <ThemedView style={styles.progressBar}>
-          <ThemedView
+      <View style={styles.progressContainer}>
+        <View style={styles.progressBar}>
+          <View
             style={[
               styles.progressFill,
               {
@@ -154,18 +154,18 @@ export default function TaskCard({ task, onPress }: TaskCardProps) {
               }
             ]}
           />
-        </ThemedView>
+        </View>
         <ThemedText style={styles.progressText}>{progressPercentage}%</ThemedText>
-      </ThemedView>
+      </View>
 
-      <ThemedView style={styles.cardFooter}>
-        <ThemedView style={styles.timeContainer}>
+      <View style={styles.cardFooter}>
+        <View style={styles.timeContainer}>
           <ThemedText style={styles.timeLabel}>Est. Duration:</ThemedText>
           <ThemedText style={styles.timeValue}>{task.estimatedDuration} min</ThemedText>
-        </ThemedView>
+        </View>
 
         {timeRemaining && (
-          <ThemedView style={styles.timeContainer}>
+          <View style={styles.timeContainer}>
             <ThemedText
               style={[
                 styles.timeValue,
@@ -174,14 +174,14 @@ export default function TaskCard({ task, onPress }: TaskCardProps) {
             >
               {timeRemaining}
             </ThemedText>
-          </ThemedView>
+          </View>
         )}
-      </ThemedView>
+      </View>
 
-      <ThemedView style={styles.assigneeContainer}>
+      <View style={styles.assigneeContainer}>
         <ThemedText style={styles.assigneeLabel}>Assigned to:</ThemedText>
         <ThemedText style={styles.assigneeValue}>{task.assignedTo}</ThemedText>
-      </ThemedView>
+      </View>
     </TouchableOpacity>
   )
 }

@@ -4,9 +4,9 @@ import {
   Platform,
   StyleSheet,
   TouchableOpacity,
+  View
 } from 'react-native'
 import { ThemedText } from './ThemedText'
-import { ThemedView } from './ThemedView'
 
 const { width } = Dimensions.get('window')
 
@@ -40,21 +40,21 @@ export default function StatsCard({
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <ThemedView style={styles.cardContent}>
-        <ThemedView style={styles.topRow}>
-          <ThemedView
+      <View style={styles.cardContent}>
+        <View style={styles.topRow}>
+          <View
             style={[styles.iconContainer, { backgroundColor: `${color}15` }]}
           >
             <ThemedText style={styles.icon}>{icon}</ThemedText>
-          </ThemedView>
+          </View>
           <ThemedText style={[styles.count, { color }]}>{count}</ThemedText>
-        </ThemedView>
+        </View>
 
         <ThemedText style={styles.title}>{title}</ThemedText>
 
-        <ThemedView style={styles.progressContainer}>
-          <ThemedView style={[styles.progressBar, { backgroundColor: `${color}20` }]}>
-            <ThemedView
+        <View style={styles.progressContainer}>
+          <View style={[styles.progressBar, { backgroundColor: `${color}20` }]}>
+            <View
               style={[
                 styles.progressFill,
                 {
@@ -63,9 +63,9 @@ export default function StatsCard({
                 }
               ]}
             />
-          </ThemedView>
-        </ThemedView>
-      </ThemedView>
+          </View>
+        </View>
+      </View>
     </TouchableOpacity>
   )
 }

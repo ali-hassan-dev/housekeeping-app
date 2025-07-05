@@ -3,11 +3,11 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  View
 } from 'react-native'
 import { TaskStatus } from '../context/TaskContext'
 import { ThemedText } from './ThemedText'
-import { ThemedView } from './ThemedView'
 
 interface StatusFilterProps {
   selectedFilter: TaskStatus | 'all'
@@ -98,8 +98,8 @@ export default function StatusFilter({
         onPress={() => onFilterChange(filter)}
         activeOpacity={0.8}
       >
-        <ThemedView style={styles.filterContent}>
-          <ThemedView
+        <View style={styles.filterContent}>
+          <View
             style={[
               styles.iconContainer,
               isSelected && styles.selectedIconContainer,
@@ -114,7 +114,7 @@ export default function StatusFilter({
             >
               {icon}
             </ThemedText>
-          </ThemedView>
+          </View>
           <ThemedText
             style={[
               styles.filterText,
@@ -126,11 +126,9 @@ export default function StatusFilter({
           </ThemedText>
 
           {isSelected && (
-            <ThemedView
-              style={[styles.activeDot, { backgroundColor: '#ffffff' }]}
-            />
+            <View style={[styles.activeDot, { backgroundColor: '#ffffff' }]} />
           )}
-        </ThemedView>
+        </View>
       </TouchableOpacity>
     )
   }
@@ -142,9 +140,9 @@ export default function StatusFilter({
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <ThemedView style={styles.filtersWrapper}>
+      <View style={styles.filtersWrapper}>
         {filters.map(renderFilterButton)}
-      </ThemedView>
+      </View>
     </ScrollView>
   )
 }
