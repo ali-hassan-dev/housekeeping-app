@@ -1,3 +1,6 @@
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
+import { useThemeColor } from '@/hooks/useThemeColor'
 import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import {
@@ -5,9 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
-  TextInput,
-  View
+  TextInput
 } from 'react-native'
 import ActionButton from '../components/ActionButton'
 import ChecklistItem from '../components/ChecklistItem'
@@ -17,6 +18,20 @@ import { useTask } from '../context/TaskContext'
 
 export default function TaskDetailScreen() {
   const { taskId } = useLocalSearchParams<{ taskId: string }>()
+
+  const textColor = useThemeColor({}, 'text')
+  const borderColor = useThemeColor(
+    { light: '#d1d5db', dark: '#374151' },
+    'text'
+  )
+  const inputBackground = useThemeColor(
+    { light: '#f9fafb', dark: '#1f2937' },
+    'background'
+  )
+  const placeholderColor = useThemeColor(
+    { light: '#9ca3af', dark: '#6b7280' },
+    'text'
+  )
 
   const { getTaskById, dispatch, state } = useTask()
   const [notes, setNotes] = useState('')
@@ -46,9 +61,9 @@ export default function TaskDetailScreen() {
   if (!task) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>Task not found</Text>
-        </View>
+        <ThemedView style={styles.errorContainer}>
+          <ThemedText style={styles.errorText}>Task not found</ThemedText>
+        </ThemedView>
       </SafeAreaView>
     )
   }
@@ -152,25 +167,25 @@ export default function TaskDetailScreen() {
           />
         )}
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Progress</Text>
-          <View style={styles.progressContainer}>
-            <View style={styles.progressBar}>
-              <View
+        <ThemedView style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>Progress</ThemedText>
+          <ThemedView style={styles.progressContainer}>
+            <ThemedView style={styles.progressBar}>
+              <ThemedView
                 style={[
                   styles.progressFill,
                   { width: `${getProgressPercentage()}%` }
                 ]}
               />
-            </View>
-            <Text style={styles.progressText}>
+            </ThemedView>
+            <ThemedText style={styles.progressText}>
               {getProgressPercentage()}% Complete
-            </Text>
-          </View>
-        </View>
+            </ThemedText>
+          </ThemedView>
+        </ThemedView>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Checklist</Text>
+        <ThemedView style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>Checklist</ThemedText>
           {task.checklistItems.map(item => (
             <ChecklistItem
               key={item.id}
@@ -179,14 +194,21 @@ export default function TaskDetailScreen() {
               disabled={isCompleted}
             />
           ))}
-        </View>
+        </ThemedView>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Notes</Text>
+        <ThemedView style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>Notes</ThemedText>
           <TextInput
-            style={styles.notesInput}
+            style={[
+              styles.notesInput,
+              {
+                borderColor: borderColor,
+                backgroundColor: inputBackground,
+                color: textColor
+              }
+            ]}
             placeholder="Add any notes about this task..."
-            placeholderTextColor="#9ca3af"
+            placeholderTextColor={placeholderColor}
             value={notes}
             onChangeText={handleNotesChange}
             multiline
@@ -194,9 +216,9 @@ export default function TaskDetailScreen() {
             textAlignVertical="top"
             editable={!isCompleted}
           />
-        </View>
+        </ThemedView>
 
-        <View style={styles.actionSection}>
+        <ThemedView style={styles.actionSection}>
           {canStartTask && (
             <ActionButton
               title="Start Task"
@@ -216,16 +238,18 @@ export default function TaskDetailScreen() {
           )}
 
           {isCompleted && (
-            <View style={styles.completedContainer}>
-              <Text style={styles.completedText}>✅ Task Completed</Text>
+            <ThemedView style={styles.completedContainer}>
+              <ThemedText style={styles.completedText}>
+                ✅ Task Completed
+              </ThemedText>
               {task.actualDuration && (
-                <Text style={styles.completedDuration}>
+                <ThemedText style={styles.completedDuration}>
                   Duration: {task.actualDuration} minutes
-                </Text>
+                </ThemedText>
               )}
-            </View>
+            </ThemedView>
           )}
-        </View>
+        </ThemedView>
       </ScrollView>
     </SafeAreaView>
   )
@@ -233,8 +257,7 @@ export default function TaskDetailScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#f8fafc'
+    flex: 1
   },
   scrollView: {
     flex: 1
@@ -249,7 +272,6 @@ const styles = StyleSheet.create({
     color: '#dc2626'
   },
   section: {
-    backgroundColor: '#ffffff',
     margin: 16,
     borderRadius: 12,
     padding: 20,
@@ -262,7 +284,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1f2937',
     marginBottom: 16
   },
   progressContainer: {
@@ -289,12 +310,9 @@ const styles = StyleSheet.create({
   },
   notesInput: {
     borderWidth: 1,
-    borderColor: '#d1d5db',
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
-    color: '#1f2937',
-    backgroundColor: '#f9fafb',
     minHeight: 100
   },
   actionSection: {

@@ -1,5 +1,8 @@
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
+import { useThemeColor } from '@/hooks/useThemeColor'
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 
 interface ChecklistItemProps {
   item: {
@@ -16,6 +19,35 @@ export default function ChecklistItem({
   onToggle,
   disabled = false
 }: ChecklistItemProps) {
+  const containerBgColor = useThemeColor(
+    { light: '#f9fafb', dark: '#1f2937' },
+    'background'
+  )
+  const completedBgColor = useThemeColor(
+    { light: '#d1fae5', dark: '#064e3b' },
+    'background'
+  )
+  const borderColor = useThemeColor(
+    { light: '#e5e7eb', dark: '#374151' },
+    'text'
+  )
+  const completedBorderColor = useThemeColor(
+    { light: '#10b981', dark: '#10b981' },
+    'text'
+  )
+  const checkboxBgColor = useThemeColor(
+    { light: '#ffffff', dark: '#374151' },
+    'background'
+  )
+  const checkboxBorderColor = useThemeColor(
+    { light: '#d1d5db', dark: '#6b7280' },
+    'text'
+  )
+  const disabledBorderColor = useThemeColor(
+    { light: '#9ca3af', dark: '#6b7280' },
+    'text'
+  )
+
   const handleToggle = () => {
     if (!disabled) {
       onToggle(!item.completed)
@@ -26,34 +58,49 @@ export default function ChecklistItem({
     <TouchableOpacity
       style={[
         styles.container,
-        item.completed && styles.completedContainer,
+        {
+          backgroundColor: item.completed ? completedBgColor : containerBgColor,
+          borderColor: item.completed ? completedBorderColor : borderColor
+        },
         disabled && styles.disabledContainer
       ]}
       onPress={handleToggle}
       disabled={disabled}
       activeOpacity={0.7}
     >
-      <View style={styles.checkboxContainer}>
-        <View
+      <ThemedView style={styles.checkboxContainer}>
+        <ThemedView
           style={[
             styles.checkbox,
-            item.completed && styles.checkedCheckbox,
-            disabled && styles.disabledCheckbox
+            {
+              backgroundColor: item.completed ? '#10b981' : checkboxBgColor,
+              borderColor: item.completed
+                ? '#10b981'
+                : disabled
+                ? disabledBorderColor
+                : checkboxBorderColor
+            }
           ]}
         >
-          {item.completed && <Text style={styles.checkmark}>✓</Text>}
-        </View>
-      </View>
+          {item.completed && <ThemedText style={styles.checkmark}>✓</ThemedText>}
+        </ThemedView>
+      </ThemedView>
 
-      <Text
+      <ThemedText
         style={[
           styles.text,
           item.completed && styles.completedText,
           disabled && styles.disabledText
         ]}
+        lightColor={
+          disabled ? '#9ca3af' : item.completed ? '#059669' : '#374151'
+        }
+        darkColor={
+          disabled ? '#6b7280' : item.completed ? '#34d399' : '#f9fafb'
+        }
       >
         {item.text}
-      </Text>
+      </ThemedText>
     </TouchableOpacity>
   )
 }
@@ -65,14 +112,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     marginBottom: 8,
-    backgroundColor: '#f9fafb',
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e5e7eb'
-  },
-  completedContainer: {
-    backgroundColor: '#d1fae5',
-    borderColor: '#10b981'
+    borderWidth: 1
   },
   disabledContainer: {
     opacity: 0.6
@@ -85,17 +126,8 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 6,
     borderWidth: 2,
-    borderColor: '#d1d5db',
-    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  checkedCheckbox: {
-    backgroundColor: '#10b981',
-    borderColor: '#10b981'
-  },
-  disabledCheckbox: {
-    borderColor: '#9ca3af'
   },
   checkmark: {
     color: '#ffffff',
@@ -105,14 +137,12 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     fontSize: 16,
-    color: '#374151',
     lineHeight: 20
   },
   completedText: {
-    color: '#059669',
     textDecorationLine: 'line-through'
   },
   disabledText: {
-    color: '#9ca3af'
+    // Color handled by ThemedText props
   }
 })

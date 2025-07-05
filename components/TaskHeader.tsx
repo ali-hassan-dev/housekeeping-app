@@ -1,12 +1,18 @@
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
+import { useThemeColor } from '@/hooks/useThemeColor'
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { Task, TaskStatus, TaskPriority } from '../context/TaskContext'
+import { StyleSheet } from 'react-native'
+import { Task, TaskPriority, TaskStatus } from '../context/TaskContext'
 
 interface TaskHeaderProps {
   task: Task
 }
 
 export default function TaskHeader({ task }: TaskHeaderProps) {
+  const cardBackgroundColor = useThemeColor({}, 'background')
+  const shadowColor = useThemeColor({ light: '#000', dark: '#000' }, 'text')
+
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
       case 'pending':
@@ -77,75 +83,142 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <View style={styles.apartmentContainer}>
-          <Text style={styles.apartmentLabel}>Room</Text>
-          <Text style={styles.apartmentNumber}>{task.apartmentNumber}</Text>
-        </View>
-        <View style={styles.badgeContainer}>
-          <View
+    <ThemedView
+      style={[
+        styles.container,
+        { backgroundColor: cardBackgroundColor, shadowColor }
+      ]}
+    >
+      <ThemedView style={styles.headerRow}>
+        <ThemedView style={styles.apartmentContainer}>
+          <ThemedText
+            style={styles.apartmentLabel}
+            lightColor="#6b7280"
+            darkColor="#9ca3af"
+          >
+            Room
+          </ThemedText>
+          <ThemedText
+            style={styles.apartmentNumber}
+            lightColor="#1f2937"
+            darkColor="#f9fafb"
+          >
+            {task.apartmentNumber}
+          </ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.badgeContainer}>
+          <ThemedView
             style={[
               styles.statusBadge,
               { backgroundColor: getStatusColor(task.status) }
             ]}
           >
-            <Text style={styles.badgeText}>{getStatusText(task.status)}</Text>
-          </View>
-          <View
+            <ThemedText style={styles.badgeText}>{getStatusText(task.status)}</ThemedText>
+          </ThemedView>
+          <ThemedView
             style={[
               styles.priorityBadge,
               { backgroundColor: getPriorityColor(task.priority) }
             ]}
           >
-            <Text style={styles.badgeText}>
+            <ThemedText style={styles.badgeText}>
               {getPriorityText(task.priority)}
-            </Text>
-          </View>
-        </View>
-      </View>
+            </ThemedText>
+          </ThemedView>
+        </ThemedView>
+      </ThemedView>
 
-      <Text style={styles.title}>{task.title}</Text>
-      <Text style={styles.description}>{task.description}</Text>
+      <ThemedText style={styles.title} lightColor="#1f2937" darkColor="#f9fafb">
+        {task.title}
+      </ThemedText>
+      <ThemedText
+        style={styles.description}
+        lightColor="#6b7280"
+        darkColor="#9ca3af"
+      >
+        {task.description}
+      </ThemedText>
 
-      <View style={styles.infoGrid}>
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>Assigned to</Text>
-          <Text style={styles.infoValue}>{task.assignedTo}</Text>
-        </View>
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>Est. Duration</Text>
-          <Text style={styles.infoValue}>{task.estimatedDuration} min</Text>
-        </View>
-        <View style={styles.infoItem}>
-          <Text style={styles.infoLabel}>Deadline</Text>
-          <Text
+      <ThemedView style={styles.infoGrid}>
+        <ThemedView style={styles.infoItem}>
+          <ThemedText
+            style={styles.infoLabel}
+            lightColor="#9ca3af"
+            darkColor="#6b7280"
+          >
+            Assigned to
+          </ThemedText>
+          <ThemedText
+            style={styles.infoValue}
+            lightColor="#4b5563"
+            darkColor="#d1d5db"
+          >
+            {task.assignedTo}
+          </ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.infoItem}>
+          <ThemedText
+            style={styles.infoLabel}
+            lightColor="#9ca3af"
+            darkColor="#6b7280"
+          >
+            Est. Duration
+          </ThemedText>
+          <ThemedText
+            style={styles.infoValue}
+            lightColor="#4b5563"
+            darkColor="#d1d5db"
+          >
+            {task.estimatedDuration} min
+          </ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.infoItem}>
+          <ThemedText
+            style={styles.infoLabel}
+            lightColor="#9ca3af"
+            darkColor="#6b7280"
+          >
+            Deadline
+          </ThemedText>
+          <ThemedText
             style={[
               styles.infoValue,
-              { color: task.status === 'overdue' ? '#dc2626' : '#4b5563' }
+              { color: task.status === 'overdue' ? '#dc2626' : undefined }
             ]}
+            lightColor={task.status === 'overdue' ? '#dc2626' : '#4b5563'}
+            darkColor={task.status === 'overdue' ? '#dc2626' : '#d1d5db'}
           >
             {formatDeadline(task.deadline)}
-          </Text>
-        </View>
+          </ThemedText>
+        </ThemedView>
         {task.actualDuration && (
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Actual Duration</Text>
-            <Text style={styles.infoValue}>{task.actualDuration} min</Text>
-          </View>
+          <ThemedView style={styles.infoItem}>
+            <ThemedText
+              style={styles.infoLabel}
+              lightColor="#9ca3af"
+              darkColor="#6b7280"
+            >
+              Actual Duration
+            </ThemedText>
+            <ThemedText
+              style={styles.infoValue}
+              lightColor="#4b5563"
+              darkColor="#d1d5db"
+            >
+              {task.actualDuration} min
+            </ThemedText>
+          </ThemedView>
         )}
-      </View>
-    </View>
+      </ThemedView>
+    </ThemedView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
     margin: 16,
     borderRadius: 16,
     padding: 20,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -163,13 +236,11 @@ const styles = StyleSheet.create({
   },
   apartmentLabel: {
     fontSize: 14,
-    color: '#6b7280',
     marginRight: 8
   },
   apartmentNumber: {
     fontSize: 32,
-    fontWeight: 'bold',
-    color: '#1f2937'
+    fontWeight: 'bold'
   },
   badgeContainer: {
     alignItems: 'flex-end'
@@ -193,12 +264,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1f2937',
     marginBottom: 8
   },
   description: {
     fontSize: 16,
-    color: '#6b7280',
     lineHeight: 24,
     marginBottom: 20
   },
@@ -214,14 +283,12 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 12,
-    color: '#9ca3af',
     marginBottom: 4,
     textTransform: 'uppercase',
     fontWeight: '600'
   },
   infoValue: {
     fontSize: 14,
-    color: '#4b5563',
     fontWeight: '600'
   }
 })

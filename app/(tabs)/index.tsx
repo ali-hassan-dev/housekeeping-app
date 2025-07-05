@@ -1,16 +1,11 @@
 import { router } from 'expo-router'
 import React, { useState } from 'react'
-import {
-  FlatList,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native'
+import { FlatList, SafeAreaView, ScrollView, StyleSheet } from 'react-native'
 import StatsCard from '../../components/StatsCard'
 import StatusFilter from '../../components/StatusFilter'
 import TaskCard from '../../components/TaskCard'
+import { ThemedText } from '../../components/ThemedText'
+import { ThemedView } from '../../components/ThemedView'
 import { TaskStatus, useTask } from '../../context/TaskContext'
 
 export default function HomeScreen() {
@@ -39,16 +34,16 @@ export default function HomeScreen() {
   )
 
   const renderHeader = () => (
-    <View style={styles.headerContainer}>
-      <Text style={styles.welcomeText}>Velkommen, Maria! 👋</Text>
-      <Text style={styles.dateText}>
+    <ThemedView style={styles.headerContainer}>
+      <ThemedText style={styles.welcomeText}>Velkommen, Maria! 👋</ThemedText>
+      <ThemedText style={styles.dateText}>
         {new Date().toLocaleDateString('da-DK', {
           weekday: 'long',
           year: 'numeric',
           month: 'long',
           day: 'numeric'
         })}
-      </Text>
+      </ThemedText>
 
       <ScrollView
         horizontal
@@ -86,7 +81,7 @@ export default function HomeScreen() {
         selectedFilter={selectedFilter}
         onFilterChange={setSelectedFilter}
       />
-    </View>
+    </ThemedView>
   )
 
   return (
@@ -99,12 +94,12 @@ export default function HomeScreen() {
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No tasks found</Text>
-            <Text style={styles.emptySubText}>
+          <ThemedView style={styles.emptyContainer}>
+            <ThemedText style={styles.emptyText}>No tasks found</ThemedText>
+            <ThemedText style={styles.emptySubText}>
               All tasks for this filter are complete!
-            </Text>
-          </View>
+            </ThemedText>
+          </ThemedView>
         }
       />
     </SafeAreaView>
@@ -113,8 +108,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#f8fafc'
+    flex: 1
   },
   headerContainer: {
     paddingHorizontal: 20,
@@ -124,12 +118,11 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1f2937',
     marginBottom: 4
   },
   dateText: {
     fontSize: 16,
-    color: '#6b7280',
+    opacity: 0.7,
     marginBottom: 20,
     textTransform: 'capitalize'
   },
@@ -151,12 +144,11 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#6b7280',
     marginBottom: 8
   },
   emptySubText: {
     fontSize: 14,
-    color: '#9ca3af',
+    opacity: 0.6,
     textAlign: 'center'
   }
 })

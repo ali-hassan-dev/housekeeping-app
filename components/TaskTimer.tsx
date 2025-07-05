@@ -1,5 +1,8 @@
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
+import { useThemeColor } from '@/hooks/useThemeColor'
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 interface TaskTimerProps {
   startTime: Date
@@ -12,6 +15,17 @@ export default function TaskTimer({
   estimatedDuration,
   timer
 }: TaskTimerProps) {
+  const cardBackgroundColor = useThemeColor({}, 'background')
+  const shadowColor = useThemeColor({ light: '#000', dark: '#000' }, 'text')
+  const progressBarBgColor = useThemeColor(
+    { light: '#e5e7eb', dark: '#374151' },
+    'text'
+  )
+  const borderColor = useThemeColor(
+    { light: '#f3f4f6', dark: '#374151' },
+    'text'
+  )
+
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds % 3600) / 60)
@@ -34,27 +48,48 @@ export default function TaskTimer({
   const progressPercentage = getProgressPercentage()
 
   return (
-    <View style={styles.container}>
-      <View style={styles.timerHeader}>
-        <Text style={styles.timerLabel}>Task Timer</Text>
-        <Text style={styles.estimatedTime}>Est. {estimatedDuration} min</Text>
-      </View>
+    <ThemedView
+      style={[
+        styles.container,
+        { backgroundColor: cardBackgroundColor, shadowColor }
+      ]}
+    >
+      <ThemedView style={styles.timerHeader}>
+        <ThemedText
+          style={styles.timerLabel}
+          lightColor="#1f2937"
+          darkColor="#f9fafb"
+        >
+          Task Timer
+        </ThemedText>
+        <ThemedText
+          style={styles.estimatedTime}
+          lightColor="#6b7280"
+          darkColor="#9ca3af"
+        >
+          Est. {estimatedDuration} min
+        </ThemedText>
+      </ThemedView>
 
-      <View style={styles.timerDisplay}>
-        <Text
+      <ThemedView style={styles.timerDisplay}>
+        <ThemedText
           style={[
             styles.timerText,
-            { color: isOvertime ? '#dc2626' : '#1f2937' }
+            { color: isOvertime ? '#dc2626' : undefined }
           ]}
+          lightColor={isOvertime ? '#dc2626' : '#1f2937'}
+          darkColor={isOvertime ? '#dc2626' : '#f9fafb'}
         >
           {formatTime(timer)}
-        </Text>
-        {isOvertime && <Text style={styles.overtimeText}>OVERTIME</Text>}
-      </View>
+        </ThemedText>
+        {isOvertime && <ThemedText style={styles.overtimeText}>OVERTIME</ThemedText>}
+      </ThemedView>
 
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View
+      <ThemedView style={styles.progressContainer}>
+        <ThemedView
+          style={[styles.progressBar, { backgroundColor: progressBarBgColor }]}
+        >
+          <ThemedView
             style={[
               styles.progressFill,
               {
@@ -63,56 +98,84 @@ export default function TaskTimer({
               }
             ]}
           />
-        </View>
-        <Text
+        </ThemedView>
+        <ThemedText
           style={[
             styles.progressText,
             { color: isOvertime ? '#dc2626' : '#3b82f6' }
           ]}
         >
           {Math.round(progressPercentage)}%
-        </Text>
-      </View>
+        </ThemedText>
+      </ThemedView>
 
-      <View style={styles.timeInfo}>
-        <View style={styles.timeItem}>
-          <Text style={styles.timeItemLabel}>Started</Text>
-          <Text style={styles.timeItemValue}>
+      <ThemedView style={[styles.timeInfo, { borderTopColor: borderColor }]}>
+        <ThemedView style={styles.timeItem}>
+          <ThemedText
+            style={styles.timeItemLabel}
+            lightColor="#9ca3af"
+            darkColor="#6b7280"
+          >
+            Started
+          </ThemedText>
+          <ThemedText
+            style={styles.timeItemValue}
+            lightColor="#4b5563"
+            darkColor="#d1d5db"
+          >
             {startTime.toLocaleTimeString('da-DK', {
               hour: '2-digit',
               minute: '2-digit'
             })}
-          </Text>
-        </View>
-        <View style={styles.timeItem}>
-          <Text style={styles.timeItemLabel}>Elapsed</Text>
-          <Text style={styles.timeItemValue}>{Math.floor(timer / 60)} min</Text>
-        </View>
-        <View style={styles.timeItem}>
-          <Text style={styles.timeItemLabel}>Remaining</Text>
-          <Text
+          </ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.timeItem}>
+          <ThemedText
+            style={styles.timeItemLabel}
+            lightColor="#9ca3af"
+            darkColor="#6b7280"
+          >
+            Elapsed
+          </ThemedText>
+          <ThemedText
+            style={styles.timeItemValue}
+            lightColor="#4b5563"
+            darkColor="#d1d5db"
+          >
+            {Math.floor(timer / 60)} min
+          </ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.timeItem}>
+          <ThemedText
+            style={styles.timeItemLabel}
+            lightColor="#9ca3af"
+            darkColor="#6b7280"
+          >
+            Remaining
+          </ThemedText>
+          <ThemedText
             style={[
               styles.timeItemValue,
               { color: isOvertime ? '#dc2626' : '#10b981' }
             ]}
+            lightColor={isOvertime ? '#dc2626' : '#10b981'}
+            darkColor={isOvertime ? '#dc2626' : '#10b981'}
           >
             {isOvertime
               ? `+${Math.floor((timer - estimatedDuration * 60) / 60)} min`
               : `${Math.floor((estimatedDuration * 60 - timer) / 60)} min`}
-          </Text>
-        </View>
-      </View>
-    </View>
+          </ThemedText>
+        </ThemedView>
+      </ThemedView>
+    </ThemedView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
     margin: 16,
     borderRadius: 16,
     padding: 20,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -126,12 +189,10 @@ const styles = StyleSheet.create({
   },
   timerLabel: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#1f2937'
+    fontWeight: '600'
   },
   estimatedTime: {
-    fontSize: 14,
-    color: '#6b7280'
+    fontSize: 14
   },
   timerDisplay: {
     alignItems: 'center',
@@ -157,7 +218,6 @@ const styles = StyleSheet.create({
   progressBar: {
     flex: 1,
     height: 8,
-    backgroundColor: '#e5e7eb',
     borderRadius: 4,
     marginRight: 12
   },
@@ -173,22 +233,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#f3f4f6'
+    borderTopWidth: 1
   },
   timeItem: {
     alignItems: 'center'
   },
   timeItemLabel: {
     fontSize: 12,
-    color: '#9ca3af',
     marginBottom: 4,
     textTransform: 'uppercase',
     fontWeight: '600'
   },
   timeItemValue: {
     fontSize: 14,
-    color: '#4b5563',
     fontWeight: '600'
   }
 })
