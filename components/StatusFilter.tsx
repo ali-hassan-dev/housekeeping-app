@@ -1,9 +1,9 @@
 import React from 'react'
 import {
-  Text,
+  ScrollView,
   StyleSheet,
-  TouchableOpacity,
-  ScrollView
+  Text,
+  TouchableOpacity
 } from 'react-native'
 import { TaskStatus } from '../context/TaskContext'
 
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   selectedButton: {
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: '#ffffff'
   },
   filterText: {
