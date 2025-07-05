@@ -2,10 +2,10 @@ import React from 'react'
 import {
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity
 } from 'react-native'
 import { TaskStatus } from '../context/TaskContext'
+import { ThemedText } from './ThemedText'
 
 interface StatusFilterProps {
   selectedFilter: TaskStatus | 'all'
@@ -75,7 +75,7 @@ export default function StatusFilter({
           ]}
           onPress={() => onFilterChange(filter)}
         >
-          <Text style={styles.filterText}>{getFilterText(filter)}</Text>
+          <ThemedText style={styles.filterText}>{getFilterText(filter)}</ThemedText>
         </TouchableOpacity>
       ))}
     </ScrollView>
