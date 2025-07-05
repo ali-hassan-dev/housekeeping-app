@@ -1,11 +1,12 @@
+import { useThemeColor } from '@/hooks/useThemeColor'
 import React from 'react'
 import {
-  View,
-  Text,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native'
-import { Task, TaskStatus, TaskPriority } from '../context/TaskContext'
+import { Task, TaskPriority, TaskStatus } from '../context/TaskContext'
+import { ThemedText } from './ThemedText'
+import { ThemedView } from './ThemedView'
 
 interface TaskCardProps {
   task: Task
@@ -13,6 +14,8 @@ interface TaskCardProps {
 }
 
 export default function TaskCard({ task, onPress }: TaskCardProps) {
+  const cardBackground = useThemeColor({ light: '#ffffff', dark: '#1f2937' }, 'background')
+  
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
       case 'pending':
@@ -103,41 +106,45 @@ export default function TaskCard({ task, onPress }: TaskCardProps) {
   const progressPercentage = getProgressPercentage()
 
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
-      <View style={styles.cardHeader}>
-        <View style={styles.apartmentContainer}>
-          <Text style={styles.apartmentNumber}>
+    <TouchableOpacity 
+      style={[styles.card, { backgroundColor: cardBackground }]} 
+      onPress={onPress} 
+      activeOpacity={0.7}
+    >
+      <ThemedView style={styles.cardHeader}>
+        <ThemedView style={styles.apartmentContainer}>
+          <ThemedText style={styles.apartmentNumber}>
             Room {task.apartmentNumber}
-          </Text>
-          <View
+          </ThemedText>
+          <ThemedView
             style={[
               styles.statusBadge,
               { backgroundColor: getStatusColor(task.status) }
             ]}
           >
-            <Text style={styles.statusText}>{getStatusText(task.status)}</Text>
-          </View>
-        </View>
-        <View
+            <ThemedText style={styles.statusText}>{getStatusText(task.status)}</ThemedText>
+          </ThemedView>
+        </ThemedView>
+        <ThemedView
           style={[
             styles.priorityBadge,
             { backgroundColor: getPriorityColor(task.priority) }
           ]}
         >
-          <Text style={styles.priorityText}>
+          <ThemedText style={styles.priorityText}>
             {getPriorityText(task.priority)}
-          </Text>
-        </View>
-      </View>
+          </ThemedText>
+        </ThemedView>
+      </ThemedView>
 
-      <Text style={styles.title}>{task.title}</Text>
-      <Text style={styles.description} numberOfLines={2}>
+      <ThemedText style={styles.title}>{task.title}</ThemedText>
+      <ThemedText style={styles.description} numberOfLines={2}>
         {task.description}
-      </Text>
+      </ThemedText>
 
-      <View style={styles.progressContainer}>
-        <View style={styles.progressBar}>
-          <View
+      <ThemedView style={styles.progressContainer}>
+        <ThemedView style={styles.progressBar}>
+          <ThemedView
             style={[
               styles.progressFill,
               {
@@ -147,41 +154,40 @@ export default function TaskCard({ task, onPress }: TaskCardProps) {
               }
             ]}
           />
-        </View>
-        <Text style={styles.progressText}>{progressPercentage}%</Text>
-      </View>
+        </ThemedView>
+        <ThemedText style={styles.progressText}>{progressPercentage}%</ThemedText>
+      </ThemedView>
 
-      <View style={styles.cardFooter}>
-        <View style={styles.timeContainer}>
-          <Text style={styles.timeLabel}>Est. Duration:</Text>
-          <Text style={styles.timeValue}>{task.estimatedDuration} min</Text>
-        </View>
+      <ThemedView style={styles.cardFooter}>
+        <ThemedView style={styles.timeContainer}>
+          <ThemedText style={styles.timeLabel}>Est. Duration:</ThemedText>
+          <ThemedText style={styles.timeValue}>{task.estimatedDuration} min</ThemedText>
+        </ThemedView>
 
         {timeRemaining && (
-          <View style={styles.timeContainer}>
-            <Text
+          <ThemedView style={styles.timeContainer}>
+            <ThemedText
               style={[
                 styles.timeValue,
                 { color: task.status === 'overdue' ? '#dc2626' : '#6b7280' }
               ]}
             >
               {timeRemaining}
-            </Text>
-          </View>
+            </ThemedText>
+          </ThemedView>
         )}
-      </View>
+      </ThemedView>
 
-      <View style={styles.assigneeContainer}>
-        <Text style={styles.assigneeLabel}>Assigned to:</Text>
-        <Text style={styles.assigneeValue}>{task.assignedTo}</Text>
-      </View>
+      <ThemedView style={styles.assigneeContainer}>
+        <ThemedText style={styles.assigneeLabel}>Assigned to:</ThemedText>
+        <ThemedText style={styles.assigneeValue}>{task.assignedTo}</ThemedText>
+      </ThemedView>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#ffffff',
     borderRadius: 16,
     padding: 20,
     marginHorizontal: 20,
@@ -206,7 +212,6 @@ const styles = StyleSheet.create({
   apartmentNumber: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#1f2937',
     marginRight: 12
   },
   statusBadge: {
@@ -232,12 +237,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
     marginBottom: 8
   },
   description: {
     fontSize: 14,
-    color: '#6b7280',
+    opacity: 0.7,
     lineHeight: 20,
     marginBottom: 16
   },
