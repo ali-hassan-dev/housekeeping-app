@@ -46,15 +46,15 @@ export default function StatusFilter({
   const getFilterText = (filter: TaskStatus | 'all') => {
     switch (filter) {
       case 'all':
-        return 'Alle'
+        return 'All'
       case 'pending':
-        return 'Afventende'
+        return 'Pending'
       case 'in-progress':
-        return 'I Gang'
+        return 'In Progress'
       case 'completed':
-        return 'Udført'
+        return 'Completed'
       case 'overdue':
-        return 'Forsinket'
+        return 'Overdue'
       default:
         return filter
     }
