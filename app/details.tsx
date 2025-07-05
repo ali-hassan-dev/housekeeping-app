@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import { useLocalSearchParams } from 'expo-router'
+import React, { useEffect, useState } from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
+  Alert,
   SafeAreaView,
   ScrollView,
-  Alert,
-  TextInput
+  StyleSheet,
+  Text,
+  TextInput,
+  View
 } from 'react-native'
-import { useLocalSearchParams } from 'expo-router'
 import ActionButton from '../components/ActionButton'
-import { useTask } from '../context/TaskContext'
+import ChecklistItem from '../components/ChecklistItem'
 import TaskHeader from '../components/TaskHeader'
 import TaskTimer from '../components/TaskTimer'
-import ChecklistItem from '../components/ChecklistItem'
+import { useTask } from '../context/TaskContext'
 
 export default function TaskDetailScreen() {
   const { taskId } = useLocalSearchParams<{ taskId: string }>()

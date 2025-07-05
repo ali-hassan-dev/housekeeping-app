@@ -1,11 +1,11 @@
 import React from 'react'
 import {
-    Dimensions,
-    Platform,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Dimensions,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native'
 
 const { width } = Dimensions.get('window')
@@ -18,14 +18,14 @@ interface StatsCardProps {
   onPress?: () => void
 }
 
-const StatsCard: React.FC<StatsCardProps> = ({
+export default function StatsCard({
   title,
   count,
   color,
   icon,
   onPress
-}) => {
-  const cardWidth = (width - 60) / 2 // Responsive width for 2 cards per row with margins
+}: StatsCardProps) {
+  const cardWidth = (width - 60) / 2
 
   return (
     <TouchableOpacity
@@ -41,7 +41,6 @@ const StatsCard: React.FC<StatsCardProps> = ({
       activeOpacity={0.8}
     >
       <View style={styles.cardContent}>
-        {/* Icon and Count Row */}
         <View style={styles.topRow}>
           <View
             style={[styles.iconContainer, { backgroundColor: `${color}15` }]}
@@ -51,10 +50,8 @@ const StatsCard: React.FC<StatsCardProps> = ({
           <Text style={[styles.count, { color }]}>{count}</Text>
         </View>
 
-        {/* Title */}
         <Text style={styles.title}>{title}</Text>
 
-        {/* Progress Indicator */}
         <View style={styles.progressContainer}>
           <View style={[styles.progressBar, { backgroundColor: `${color}20` }]}>
             <View
@@ -144,5 +141,3 @@ const styles = StyleSheet.create({
     borderRadius: 2
   }
 })
-
-export default StatsCard

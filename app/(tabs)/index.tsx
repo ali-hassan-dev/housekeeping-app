@@ -1,17 +1,17 @@
+import { router } from 'expo-router'
 import React, { useState } from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
   FlatList,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native'
-import { router } from 'expo-router'
-import { useTask, TaskStatus } from '@/context/TaskContext'
-import TaskCard from '../../components/TaskCard'
-import StatusFilter from '../../components/StatusFilter'
 import StatsCard from '../../components/StatsCard'
+import StatusFilter from '../../components/StatusFilter'
+import TaskCard from '../../components/TaskCard'
+import { TaskStatus, useTask } from '../../context/TaskContext'
 
 export default function HomeScreen() {
   const { state, getTasksByStatus, getOverdueTasks } = useTask()
@@ -29,7 +29,7 @@ export default function HomeScreen() {
 
   const handleTaskPress = (taskId: string) => {
     router.push({
-      pathname: '/task-detail',
+      pathname: '/details',
       params: { taskId }
     })
   }
