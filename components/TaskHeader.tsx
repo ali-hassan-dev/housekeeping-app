@@ -189,7 +189,7 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
             {formatDeadline(task.deadline)}
           </ThemedText>
         </View>
-        {task.actualDuration && (
+        {task.actualDuration ? (
           <View style={styles.infoItem}>
             <ThemedText
               style={styles.infoLabel}
@@ -206,7 +206,7 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
               {task.actualDuration} min
             </ThemedText>
           </View>
-        )}
+        ) : null}
       </View>
     </View>
   )

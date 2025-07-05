@@ -111,10 +111,9 @@ export default function TaskDetailScreen() {
   }
 
   const handleCompleteTask = () => {
-    const completedItems = task.checklistItems.filter(
-      item => item.completed
-    ).length
-    const totalItems = task.checklistItems.length
+    const completedItems =
+      task.checklistItems?.filter(item => item.completed).length || 0
+    const totalItems = task.checklistItems?.length || 0
 
     if (completedItems < totalItems) {
       Alert.alert(
@@ -159,6 +158,9 @@ export default function TaskDetailScreen() {
   }
 
   const getProgressPercentage = () => {
+    if (!task?.checklistItems || task.checklistItems.length === 0) {
+      return 0
+    }
     const completedItems = task.checklistItems.filter(
       item => item.completed
     ).length
@@ -184,13 +186,13 @@ export default function TaskDetailScreen() {
         >
           <TaskHeader task={task} />
 
-          {task.status === 'in-progress' && (
+          {task.status === 'in-progress' && task.startTime ? (
             <TaskTimer
-              startTime={task.startTime!}
+              startTime={task.startTime}
               estimatedDuration={task.estimatedDuration}
               timer={timer}
             />
-          )}
+          ) : null}
 
           <View style={[{ backgroundColor }, styles.section]}>
             <ThemedText style={styles.sectionTitle}>Progress</ThemedText>
@@ -211,16 +213,22 @@ export default function TaskDetailScreen() {
 
           <View style={[{ backgroundColor }, styles.section]}>
             <ThemedText style={styles.sectionTitle}>Checklist</ThemedText>
-            {task.checklistItems.map(item => (
-              <ChecklistItem
-                key={item.id}
-                item={item}
-                onToggle={completed =>
-                  handleChecklistToggle(item.id, completed)
-                }
-                disabled={isCompleted}
-              />
-            ))}
+            {task.checklistItems && task.checklistItems.length > 0 ? (
+              task.checklistItems.map(item => (
+                <ChecklistItem
+                  key={item.id}
+                  item={item}
+                  onToggle={completed =>
+                    handleChecklistToggle(item.id, completed)
+                  }
+                  disabled={isCompleted}
+                />
+              ))
+            ) : (
+              <ThemedText style={{ color: textColor, opacity: 0.7 }}>
+                No checklist items available
+              </ThemedText>
+            )}
           </View>
 
           <View style={[{ backgroundColor }, styles.section]}>
@@ -236,7 +244,7 @@ export default function TaskDetailScreen() {
               ]}
               placeholder="Add any notes about this task..."
               placeholderTextColor={placeholderColor}
-              value={notes}
+              value={notes ?? null}
               onChangeText={handleNotesChange}
               multiline
               numberOfLines={4}
@@ -246,16 +254,16 @@ export default function TaskDetailScreen() {
           </View>
 
           <View style={styles.actionSection}>
-            {canStartTask && (
+            {canStartTask ? (
               <ActionButton
                 title="Start Task"
                 onPress={handleStartTask}
                 style={styles.startButton}
                 textStyle={styles.startButtonText}
               />
-            )}
+            ) : null}
 
-            {canStopTask && (
+            {canStopTask ? (
               <View style={styles.buttonRow}>
                 <ActionButton
                   title="Stop Task"
@@ -270,20 +278,20 @@ export default function TaskDetailScreen() {
                   textStyle={styles.completeButtonText}
                 />
               </View>
-            )}
+            ) : null}
 
-            {isCompleted && (
+            {isCompleted ? (
               <View style={styles.completedContainer}>
                 <ThemedText style={styles.completedText}>
                   ✅ Task Completed
                 </ThemedText>
-                {task.actualDuration && (
+                {task.actualDuration ? (
                   <ThemedText style={styles.completedDuration}>
                     Duration: {task.actualDuration} minutes
                   </ThemedText>
-                )}
+                ) : null}
               </View>
-            )}
+            ) : null}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -327,7 +335,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: 16
+    marginBottom: 16,
+    color: '#1f2937'
   },
   progressContainer: {
     flexDirection: 'row',
