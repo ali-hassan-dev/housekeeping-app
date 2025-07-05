@@ -72,16 +72,15 @@ export default function TaskTimer({
 
       <View style={styles.timerDisplay}>
         <ThemedText
-          style={[
-            styles.timerText,
-            { color: isOvertime ? '#dc2626' : undefined }
-          ]}
+          style={styles.timerText}
           lightColor={isOvertime ? '#dc2626' : '#1f2937'}
           darkColor={isOvertime ? '#dc2626' : '#f9fafb'}
         >
           {formatTime(timer)}
         </ThemedText>
-        {isOvertime && <ThemedText style={styles.overtimeText}>OVERTIME</ThemedText>}
+        {isOvertime && (
+          <ThemedText style={styles.overtimeText}>OVERTIME</ThemedText>
+        )}
       </View>
 
       <View style={styles.progressContainer}>
@@ -198,7 +197,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   timerText: {
-    fontSize: 48,
+    fontSize: 24,
     fontWeight: 'bold',
     fontFamily: 'monospace'
   },

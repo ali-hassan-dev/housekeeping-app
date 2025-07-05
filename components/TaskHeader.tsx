@@ -112,7 +112,9 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
               { backgroundColor: getStatusColor(task.status) }
             ]}
           >
-            <ThemedText style={styles.badgeText}>{getStatusText(task.status)}</ThemedText>
+            <ThemedText style={styles.badgeText}>
+              {getStatusText(task.status)}
+            </ThemedText>
           </View>
           <View
             style={[
@@ -180,10 +182,7 @@ export default function TaskHeader({ task }: TaskHeaderProps) {
             Deadline
           </ThemedText>
           <ThemedText
-            style={[
-              styles.infoValue,
-              { color: task.status === 'overdue' ? '#dc2626' : undefined }
-            ]}
+            style={styles.infoValue}
             lightColor={task.status === 'overdue' ? '#dc2626' : '#4b5563'}
             darkColor={task.status === 'overdue' ? '#dc2626' : '#d1d5db'}
           >
@@ -218,6 +217,7 @@ const styles = StyleSheet.create({
     margin: 16,
     borderRadius: 16,
     padding: 20,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     marginRight: 8
   },
   apartmentNumber: {
-    fontSize: 32,
+    fontSize: 16,
     fontWeight: 'bold'
   },
   badgeContainer: {

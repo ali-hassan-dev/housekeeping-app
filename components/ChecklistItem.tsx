@@ -81,7 +81,9 @@ export default function ChecklistItem({
             }
           ]}
         >
-          {item.completed && <ThemedText style={styles.checkmark}>✓</ThemedText>}
+          {item.completed && (
+            <ThemedText style={styles.checkmark}>✓</ThemedText>
+          )}
         </View>
       </View>
 

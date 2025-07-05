@@ -32,6 +32,7 @@ export default function TaskDetailScreen() {
     { light: '#9ca3af', dark: '#6b7280' },
     'text'
   )
+  const backgroundColor = useThemeColor({}, 'background')
 
   const { getTaskById, dispatch, state } = useTask()
   const [notes, setNotes] = useState('')
@@ -167,7 +168,7 @@ export default function TaskDetailScreen() {
           />
         )}
 
-        <View style={styles.section}>
+        <View style={[{ backgroundColor }, styles.section]}>
           <ThemedText style={styles.sectionTitle}>Progress</ThemedText>
           <View style={styles.progressContainer}>
             <View style={styles.progressBar}>
@@ -184,7 +185,7 @@ export default function TaskDetailScreen() {
           </View>
         </View>
 
-        <View style={styles.section}>
+        <View style={[{ backgroundColor }, styles.section]}>
           <ThemedText style={styles.sectionTitle}>Checklist</ThemedText>
           {task.checklistItems.map(item => (
             <ChecklistItem
@@ -196,7 +197,7 @@ export default function TaskDetailScreen() {
           ))}
         </View>
 
-        <View style={styles.section}>
+        <View style={[{ backgroundColor }, styles.section]}>
           <ThemedText style={styles.sectionTitle}>Notes</ThemedText>
           <TextInput
             style={[
