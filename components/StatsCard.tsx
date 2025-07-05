@@ -3,10 +3,10 @@ import {
   Dimensions,
   Platform,
   StyleSheet,
-  Text,
   TouchableOpacity,
-  View
 } from 'react-native'
+import { ThemedText } from './ThemedText'
+import { ThemedView } from './ThemedView'
 
 const { width } = Dimensions.get('window')
 
@@ -40,21 +40,21 @@ export default function StatsCard({
       onPress={onPress}
       activeOpacity={0.8}
     >
-      <View style={styles.cardContent}>
-        <View style={styles.topRow}>
-          <View
+      <ThemedView style={styles.cardContent}>
+        <ThemedView style={styles.topRow}>
+          <ThemedView
             style={[styles.iconContainer, { backgroundColor: `${color}15` }]}
           >
-            <Text style={styles.icon}>{icon}</Text>
-          </View>
-          <Text style={[styles.count, { color }]}>{count}</Text>
-        </View>
+            <ThemedText style={styles.icon}>{icon}</ThemedText>
+          </ThemedView>
+          <ThemedText style={[styles.count, { color }]}>{count}</ThemedText>
+        </ThemedView>
 
-        <Text style={styles.title}>{title}</Text>
+        <ThemedText style={styles.title}>{title}</ThemedText>
 
-        <View style={styles.progressContainer}>
-          <View style={[styles.progressBar, { backgroundColor: `${color}20` }]}>
-            <View
+        <ThemedView style={styles.progressContainer}>
+          <ThemedView style={[styles.progressBar, { backgroundColor: `${color}20` }]}>
+            <ThemedView
               style={[
                 styles.progressFill,
                 {
@@ -63,16 +63,15 @@ export default function StatsCard({
                 }
               ]}
             />
-          </View>
-        </View>
-      </View>
+          </ThemedView>
+        </ThemedView>
+      </ThemedView>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#ffffff',
     borderRadius: 16,
     borderLeftWidth: 4,
     marginRight: 16,
@@ -124,9 +123,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#374151',
     marginBottom: 12,
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
+    opacity: 0.7
   },
   progressContainer: {
     width: '100%'
