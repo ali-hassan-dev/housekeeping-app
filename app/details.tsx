@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: 16,
+    marginBottom: 16
   },
   progressContainer: {
     flexDirection: 'row',

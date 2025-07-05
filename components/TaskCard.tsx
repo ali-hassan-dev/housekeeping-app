@@ -1,10 +1,6 @@
 import { useThemeColor } from '@/hooks/useThemeColor'
 import React from 'react'
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Task, TaskPriority, TaskStatus } from '../context/TaskContext'
 import { ThemedText } from './ThemedText'
 
@@ -14,8 +10,11 @@ interface TaskCardProps {
 }
 
 export default function TaskCard({ task, onPress }: TaskCardProps) {
-  const cardBackground = useThemeColor({ light: '#ffffff', dark: '#1f2937' }, 'background')
-  
+  const cardBackground = useThemeColor(
+    { light: '#ffffff', dark: '#1f2937' },
+    'background'
+  )
+
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
       case 'pending':
@@ -106,9 +105,9 @@ export default function TaskCard({ task, onPress }: TaskCardProps) {
   const progressPercentage = getProgressPercentage()
 
   return (
-    <TouchableOpacity 
-      style={[styles.card, { backgroundColor: cardBackground }]} 
-      onPress={onPress} 
+    <TouchableOpacity
+      style={[styles.card, { backgroundColor: cardBackground }]}
+      onPress={onPress}
       activeOpacity={0.7}
     >
       <View style={styles.cardHeader}>
@@ -122,7 +121,9 @@ export default function TaskCard({ task, onPress }: TaskCardProps) {
               { backgroundColor: getStatusColor(task.status) }
             ]}
           >
-            <ThemedText style={styles.statusText}>{getStatusText(task.status)}</ThemedText>
+            <ThemedText style={styles.statusText}>
+              {getStatusText(task.status)}
+            </ThemedText>
           </View>
         </View>
         <View
@@ -155,13 +156,17 @@ export default function TaskCard({ task, onPress }: TaskCardProps) {
             ]}
           />
         </View>
-        <ThemedText style={styles.progressText}>{progressPercentage}%</ThemedText>
+        <ThemedText style={styles.progressText}>
+          {progressPercentage}%
+        </ThemedText>
       </View>
 
       <View style={styles.cardFooter}>
         <View style={styles.timeContainer}>
           <ThemedText style={styles.timeLabel}>Est. Duration:</ThemedText>
-          <ThemedText style={styles.timeValue}>{task.estimatedDuration} min</ThemedText>
+          <ThemedText style={styles.timeValue}>
+            {task.estimatedDuration} min
+          </ThemedText>
         </View>
 
         {timeRemaining && (
